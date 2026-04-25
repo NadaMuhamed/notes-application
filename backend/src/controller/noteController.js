@@ -1,15 +1,34 @@
-exports.getNotes = (req, res) => {
-    res.status(200).json({ message: 'You have a 10 Notes' });
-}
- exports.createNote = (req, res) => {
-    console.log(req.body);
-    res.status(201).json({ message: 'Note received successfully!' });
+const Note = require('../models/Note');
+exports.getNotes = async (req, res) => {
+    try {
+        const notes = await Note.find();
+        res.status(200).json(notes);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching notes' });
+    }
 };
-exports.updateNote = (req, res) => {
-    console.log('Note updated');
-    res.status(200).json({ message: 'Note updated successfully!' });
+exports.createNote = async (req, res) => {
+    try {
+        const note = new Note(req.body);
+        await note.save();
+        res.status(201).json(note);
+    } catch (error) {
+        res.status(400).json({ message: 'Error creating note' });
+    }
+};
+exports.updateNote = async  (req, res) => {
+    try {
+        const note = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.status(200).json(note);
+    } catch (error) {
+        res.status(400).json({ message: 'Error updating note' });
+    }
 }
-exports.deleteNote = (req, res) => {
-    console.log('Note deleted');
-    res.status(200).json({ message: 'Note deleted successfully!' });
+exports.deleteNote = async (req, res) => {
+    try {
+        await Note.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: 'Note deleted successfully!' });
+    } catch (error) {
+        res.status(400).json({ message: 'Error deleting note' });
+    }
 }
