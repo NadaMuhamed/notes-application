@@ -1,7 +1,10 @@
 const express = require('express');
 const connectDB = require('./config/db');
+require('dotenv').config();
+const rateLimiter = require('./middleware/rateLimiter');
 const app = express();
 app.use(express.json());
+app.use(rateLimiter);
 
 connectDB();
 
