@@ -1,9 +1,12 @@
 const Note = require('../models/Note');
 exports.getNotes = async (req, res) => {
+    console.log("GET /api/notes hit!");
     try {
         const notes = await Note.find();
+        console.log("Notes found in DB:", notes);
         res.status(200).json(notes);
     } catch (error) {
+        console.log("Error fetching notes from DB:", error);
         res.status(500).json({ message: 'Error fetching notes' });
     }
 };
