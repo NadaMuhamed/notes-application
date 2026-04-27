@@ -4,6 +4,7 @@ const noteController = require('../controller/noteController');
 
 
 router.get('/', noteController.getNotes);
+router.get('/:id', noteController.getNote);
 
 router.post('/', noteController.createNote);
 
